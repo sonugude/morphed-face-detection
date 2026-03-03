@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Access Page - Morph Detection</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fafafa;
+            color: #111;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        header h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        header a {
+            text-decoration: none;
+            color: #111;
+            font-weight: 500;
+        }
+
+        /* Layout */
+        main {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 30px;
+        }
+
+        /* Cards */
+        .card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        /* Action Card */
+        .action-card {
+            text-align: center;
+        }
+
+        /* Buttons */
+        .action-button,
+        .nav-button {
+            padding: 12px 22px;
+            background: #000;
+            color: #fff;
+            border: 1px solid #000;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .action-button:hover,
+        .nav-button:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* Result */
+        #result-box {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h2>Spotting Morphed Faces</h2>
+        <a href="home page.html#getyouridentitychecked">← Back</a>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>Spotting Morphed Faces – Key Points</h2>
+            <ol>
+                <li><strong>What is Morphing in Faces?</strong>
+                    <ul>
+                        <li>Face morphing is the blending of two or more face images to create a new identity that
+                            resembles all source images — commonly used to fool biometric systems.</li>
+                    </ul>
+                </li>
+                <li><strong>How Detection is Done?</strong>
+                    <ul>
+                        <li>Visual Artifact Analysis: Looks for inconsistencies like blur, ghosting, or unnatural
+                            textures.</li>
+                        <li>Deep Learning-Based Detection: CNNs learn pixel-level anomalies that indicate morphing.</li>
+                        <li>Landmark Inconsistency Analysis: Measures symmetry or mismatches in facial landmarks.</li>
+                    </ul>
+                </li>
+                <li><strong>Tools & Technologies Used</strong>
+                    <ul>
+                        <li>Image Processing: OpenCV, PIL, Scikit-Image.</li>
+                        <li>Deep Learning: TensorFlow, PyTorch, VGG-based or ResNet architectures.</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+
+        <section class="card action-card">
+            <h2>Analyze Image</h2>
+            <p>Select a file to check for face morphing anomalies.</p>
+
+            <input type="file" id="uploadInput" hidden>
+            <button id="uploadBtn" class="action-button">Upload from Files</button>
+
+            <div id="result-box">
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <a href="home page.html">
+            <button class="nav-button">Home Page</button>
+        </a>
+    </footer>
+
+    <script>
+        document.getElementById("uploadBtn").onclick = () => {
+            document.getElementById("uploadInput").click();
+        };
+
+        document.getElementById("uploadInput").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const resultBox = document.getElementById("result-box");
+            resultBox.innerHTML = "<p>Processing image...</p>";
+
+            try {
+                const response = await fetch("/detect-morph/", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                // 1. Check for server-side errors
+                if (data.error) {
+                    resultBox.innerHTML = `<p style="color:red;">${data.error}</p>`;
+                    return;
+                }
+
+                // 2. Multi-face Logic (Restored and Fixed from Code 1)
+                // We use data.face_count (assuming that was the intended $f variable)
+                let faceCount = data.faces_detected || (data.results ? data.results.length : 0);
+                let resultHtml = `<p><strong>Faces Detected:</strong> ${faceCount}</p>`;
+
+                if (data.results && Array.isArray(data.results)) {
+                    data.results.forEach((res, index) => {
+                        // Color coding the result for better UX
+                        const color = res.result.toLowerCase().includes("morph") ? "red" : "green";
+                        resultHtml += `<p><strong>Face ${index + 1}:</strong> <span style="color:${color}">${res.result}</span></p>`;
+                    });
+                } else {
+                    resultHtml += `<p style="color:orange;">Analysis complete, but no individual face data was returned.</p>`;
+                }
+
+                resultBox.innerHTML = resultHtml;
+
+            } catch (error) {
+                resultBox.innerHTML = `<p style="color:red;">Error uploading image: ${error.message}</p>`;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

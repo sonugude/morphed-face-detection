@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Face Recognition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    /* ===== RESET ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+      color: #111;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    header h2 {
+      font-size: 20px;
+    }
+
+    header a {
+      text-decoration: none;
+      color: #000;
+      font-weight: 500;
+    }
+
+    /* ===== LAYOUT ===== */
+    main {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+    }
+
+    /* ===== CARDS ===== */
+    .card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 30px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    /* ===== BUTTON ===== */
+    .btn {
+      padding: 12px 26px;
+      border-radius: 8px;
+      border: 1px solid #000;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn:hover {
+      background: transparent;
+      color: #000;
+    }
+
+    /* ===== INPUT ===== */
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    /* ===== IMAGE PREVIEW ===== */
+    img {
+      max-width: 220px;
+      /* control size */
+      width: auto;
+      height: auto;
+      margin-top: 20px;
+      border-radius: 8px;
+      display: none;
+      border: 1px solid #ddd;
+    }
+
+
+
+    #result {
+      margin-top: 15px;
+      font-size: 15px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h2>Face Recognition</h2>
+    <a href="/">← Home</a>
+  </header>
+
+  <main>
+
+    <!-- LEFT -->
+    <section class="card">
+      <h3>Recognize a Face</h3>
+      <p>
+        Upload a face image and enter a name to verify identity using facial recognition.
+      </p>
+
+      <input type="text" id="nameInput" placeholder="Enter name to match">
+      <input type="file" id="imageInput" accept="image/*">
+
+      <button class="btn" onclick="recognizeFace()">Recognize</button>
+
+      <img id="preview">
+      <p id="result"></p>
+    </section>
+
+    <!-- RIGHT -->
+    <section class="card">
+      <h3>How It Works</h3>
+
+      <ol>
+        <li><b>Upload Image</b>
+          <ul>
+            <li>Select a clear face image</li>
+            <li>Ensure good lighting</li>
+          </ul>
+        </li>
+
+        <li><b>Recognition</b>
+          <ul>
+            <li>Face encoding is generated</li>
+            <li>Matched against stored data</li>
+          </ul>
+        </li>
+
+        <li><b>Result</b>
+          <ul>
+            <li>Match confidence returned</li>
+            <li>Identity verified or rejected</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+  </main>
+
+  <script>
+  const imageInput = document.getElementById("imageInput");
+  const preview = document.getElementById("preview");
+  const resultText = document.getElementById("result");
+  const nameInput = document.getElementById("nameInput");
+
+  // ✅ When image changes
+  imageInput.addEventListener("change", () => {
+    const file = imageInput.files[0];
+    if (!file) return;
+
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+
+    // ✅ make image compact
+    preview.style.maxWidth = "220px";
+    preview.style.maxHeight = "220px";
+    preview.style.objectFit = "contain";
+
+    // ✅ clear old result
+    resultText.textContent = "";
+  });
+
+  // ✅ When name changes
+  nameInput.addEventListener("input", () => {
+    resultText.textContent = "";
+  });
+
+  async function recognizeFace() {
+    const name = nameInput.value.trim();
+    const file = imageInput.files[0];
+
+    if (!name || !file) {
+      alert("Please enter name and select an image");
+      return;
+    }
+
+    // ✅ buffering state
+    resultText.textContent = "Processing... Please wait ⏳";
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("/recognize-face/", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      // ✅ replace buffering with result
+      resultText.textContent = data.message || "Recognition completed";
+
+    } catch (error) {
+      resultText.textContent = "Something went wrong ❌";
+    }
+  }
+</script>
+
+
+</body>
+
+</html>

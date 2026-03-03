@@ -1,0 +1,74 @@
+{
+    "1.npy": {
+        "image_filename": "1.jpg",
+        "face_roi": [
+            254,
+            155,
+            160,
+            160
+        ]
+    },
+    "2.npy": {
+        "image_filename": "2.jpg",
+        "face_roi": [
+            254,
+            156,
+            161,
+            161
+        ]
+    },
+    "3.npy": {
+        "image_filename": "3.jpg",
+        "face_roi": [
+            273,
+            156,
+            146,
+            146
+        ]
+    },
+    "4.npy": {
+        "image_filename": "4.jpg",
+        "face_roi": [
+            276,
+            140,
+            153,
+            153
+        ]
+    },
+    "5.npy": {
+        "image_filename": "5.jpg",
+        "face_roi": [
+            305,
+            161,
+            153,
+            153
+        ]
+    },
+    "6.npy": {
+        "image_filename": "6.jpg",
+        "face_roi": [
+            268,
+            139,
+            174,
+            174
+        ]
+    },
+    "7.npy": {
+        "image_filename": "7.jpg",
+        "face_roi": [
+            272,
+            147,
+            162,
+            162
+        ]
+    },
+    "8.npy": {
+        "image_filename": "8.jpg",
+        "face_roi": [
+            273,
+            160,
+            148,
+            148
+        ]
+    }
+}

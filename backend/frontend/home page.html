@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Morphed Face Detection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --bg: #fafafa;
+      --card: #ffffff;
+      --text: #111;
+      --muted: #555;
+      --border: #e0e0e0;
+      --btn-bg: #000;
+      --btn-text: #fff;
+    }
+
+    body.dark {
+      --bg: #0f1115;
+      --card: #161a22;
+      --text: #eaeaea;
+      --muted: #aaaaaa;
+      --border: #2a2f3a;
+      --btn-bg: #ffffff;
+      --btn-text: #000;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 40px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      opacity: 0.7;
+    }
+
+    .toggle {
+      margin-left: 25px;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: none;
+      color: var(--text);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 70px 20px;
+    }
+
+    .hero h2 {
+      font-size: 34px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .modules {
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 22px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 15px;
+      border: 1px solid var(--btn-bg);
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      transition: all 0.25s ease;
+    }
+
+    /* Hover → invert colors automatically */
+    .btn:hover {
+      background: transparent;
+      color: var(--btn-bg);
+    }
+
+    /* Secondary buttons */
+    .btn.secondary {
+      background: transparent;
+      color: var(--btn-bg);
+    }
+
+    /* Secondary hover → fill */
+    .btn.secondary:hover {
+      background: var(--btn-bg);
+      color: var(--btn-text);
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+      margin-left: 20px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #ccc;
+      border-radius: 30px;
+      transition: 0.3s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    input:checked+.slider {
+      background-color: #666;
+    }
+
+    input:checked+.slider:before {
+      transform: translateX(22px);
+    }
+
+
+    footer {
+      text-align: center;
+      padding: 22px;
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Morphed Face Detection</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/face_data_collection">Modules</a>
+      <a href="/about">About</a>
+      <a href="/user-manual">User Manual</a>
+      <label class="switch">
+        <input type="checkbox" onclick="toggleTheme()" id="themeToggle">
+        <span class="slider"></span>
+      </label>
+
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Morphed Face Detection System</h2>
+    <p>
+      A deep learning–based system designed to detect facial morphing
+      and identity manipulation for secure biometric verification.
+    </p>
+  </section>
+
+  <section class="modules">
+
+    <div class="card">
+      <h3>Face Data Collection</h3>
+      <p>Capture and store facial images to build a reliable dataset.</p>
+      <a class="btn secondary" href="/face_data_collection">Open Module</a>
+    </div>
+
+    <div class="card">
+      <h3>Face Recognition</h3>
+      <p>Identify individuals using facial feature encoding.</p>
+      <a class="btn secondary" href="/face_recognition">Open Module</a>
+    </div>
+
+    <div class="card">
+      <h3>Morph Detection</h3>
+      <p>Detect whether a face image is morphed or genuine.</p>
+      <a class="btn secondary" href="/morph_detection">Open Module</a>
+    </div>
+
+  </section>
+
+  <footer>
+      Morphed Face Detection – Project
+  </footer>
+
+  <script>
+    const toggle = document.getElementById("themeToggle");
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+      toggle.checked = isDark;
+    }
+
+    // Load saved theme
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+      toggle.checked = true;
+    }
+  </script>
+
+
+</body>
+
+</html>
