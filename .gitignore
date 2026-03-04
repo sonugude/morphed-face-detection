@@ -1,0 +1,10 @@
+myvenv/
+Oracle_JDK-24/
+.vscode/
+__pycache__/
+*.pyc
+*.pth
+dataset/
+encodings/
+uploads/
+.gitconfig
