@@ -1,2 +1,21 @@
 [core]
 	editor = \"C:\\Users\\Sonu\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\code\" --wait
+# Dataset
+dataset/
+encodings/
+uploads/
+
+# Model files
+*.pt
+*.pth
+*.h5
+*.npy
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
