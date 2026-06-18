@@ -1,5 +1,13 @@
 # Morphed Face Detection System
 
+![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-Framework-green?logo=fastapi)
+![OpenCV](https://img.shields.io/badge/OpenCV-Computer%20Vision-red?logo=opencv)
+![Cybersecurity](https://img.shields.io/badge/Cybersecurity-Project-orange)
+![Status](https://img.shields.io/badge/Status-Active-success)
+
+# Morphed Face Detection System
+
 ## Overview
 
 Morphed Face Detection System is a web-based security application designed to detect and prevent face morphing attacks in facial recognition systems. The project combines facial recognition, face morph detection, and user-friendly web interfaces to improve identity verification and authentication security.
